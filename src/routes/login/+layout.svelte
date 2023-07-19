@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import AnimatedRoute from '$lib/components/AnimatedRoute.svelte';
+	import AuthCheck from '$lib/components/AuthCheck.svelte';
 </script>
 
 <nav class="my-6 flex justify-center">
@@ -18,8 +20,10 @@
 	</ul>
 </nav>
 
-<main class="card mx-auto w-4/6 bg-neutral text-neutral-content">
-	<div class="card-body items-center text-center">
-		<slot />
-	</div>
-</main>
+<AnimatedRoute>
+	<main class="card mx-auto w-4/6 bg-neutral text-neutral-content">
+		<div class="card-body items-center text-center">
+			<slot />
+		</div>
+	</main>
+</AnimatedRoute>
