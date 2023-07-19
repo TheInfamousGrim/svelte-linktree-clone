@@ -1,10 +1,14 @@
+// Import svelte writable store
+import { writable } from 'svelte/store';
+
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from 'firebase/app';
 
 // TODO: Add SDKs for Firebase products that you want to use
 import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,3 +35,27 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+
+// returns a store with the current firebase user
+function userStore() {
+	if (!auth || !globalThis.window) {
+		console.warn('Auth is not initialized or not in browser');
+
+		const { subscribe } = writable<User | null>(null);
+		return {
+			subscribe
+		};
+	}
+
+	const { subscribe } = writable(auth?.currentUser ?? null, (set) => {
+		onAuthStateChanged(auth, (user) => {
+			set(user);
+		});
+	});
+
+	return {
+		subscribe
+	};
+}
+
+export const user = userStore();
