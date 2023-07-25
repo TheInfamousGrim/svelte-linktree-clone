@@ -16,7 +16,8 @@
 {#if $user}
 	<h2 class="text-lg font-semibold">Welcome, {$user.displayName}</h2>
 	<p class="mb-4 text-secondary">You are currently logged in</p>
-	<button class="btn btn-warning" on:click={() => signOut(auth)}>Sign Out</button>
+	<button class="btn btn-warning mb-4" on:click={() => signOut(auth)}>Sign Out</button>
+	<a href="/login/username" class="btn">Choose Username</a>
 {:else}
-	<button class="btn" on:click={signInWithGoogle}>Sign In With Google</button>
+	<button class="btn btn-primary" on:click={signInWithGoogle}>Sign In With Google</button>
 {/if}
